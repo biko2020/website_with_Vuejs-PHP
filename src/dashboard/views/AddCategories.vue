@@ -1,6 +1,6 @@
 <template>
  <v-app>
-    <Header />
+    <Dashboard />
     <router-view />
    <v-content>
         <CategorieApp />
@@ -9,12 +9,12 @@
    
 </template>
 <script>
-import Header from '@/dashboard/components/Admin/Header.vue';
+import Dashboard from '@/dashboard/views/Dashboard.vue';
 import CategorieApp from '@/dashboard/components/CategorieApp.vue';
 export default {
     name:'Categories',
     components: {
-        Header,
+        Dashboard,
         CategorieApp,
     }
     

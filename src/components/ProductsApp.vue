@@ -125,8 +125,10 @@ export default {
   methods: {
     // ---* fonction pour récuperer la liste des catégories
     getCategories() {
-      axios.get(API_URL + "categorie").then((response) => {
-        this.Categories = response.data;
+      axios.get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
+      .then((response) => {
+        console.log(response.data.NameCategorie);
+        this.Categories = response.data.NameCategorie;
       });
     },
 

@@ -1,11 +1,11 @@
 <?php
-// Initialize the session
+// Initialiser la session
 session_start();
  
 // detruire les variables session 
 $_SESSION = array();
  
-//  detruire les sessions .
+//  detruire la session .
 session_destroy();
  
 // redirection vers la page login.php

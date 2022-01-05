@@ -2,7 +2,7 @@
 <v-app>
   
      <router-view></router-view>
-    <Header />
+    <Dashboard />
     <v-content>
         <ProductApp /> 
     </v-content>
@@ -13,13 +13,13 @@
 
 <script>
 
-import Header from '@/dashboard/components/Admin/Header.vue';
+import Dashboard from '@/dashboard/views/Dashboard.vue';
 import ProductApp from '@/dashboard/components/ProductApp.vue';
 
 export default {
     name: 'Products',
     components: {
-        Header,
+        Dashboard,
         ProductApp,
        
     }

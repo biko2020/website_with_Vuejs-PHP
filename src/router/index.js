@@ -3,6 +3,12 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Cpanel from '../dashboard/views/Admin.vue'
 
+import Dashboard from '../dashboard/views/Dashboard.vue'
+import Welcome from '../dashboard/views/Welcome.vue'
+import AddCategories from '../dashboard/views/AddCategories.vue'
+import AddProducts from '../dashboard/views/AddProdcuts.vue'
+
+
 
 
 
@@ -49,22 +55,35 @@ const routes = [
   name:'Admin',
   component:Cpanel,
 },
+
 {
  path: '/dashboard',
  name: 'Dashboard',
- component: () => import(/* webpackChunkName: "Dashboard" */ '@/dashboard/views/Dashboard.vue')
+ component: Dashboard,
+
+       // --> childe for Dashboard
+
+    children:[
+      {
+        path: '/',
+        component: Welcome
+      },
+      {
+        path: '/addCategories',
+        name: 'AddCategories',
+        component: AddCategories
+      },
+      {
+        path: '/addProducts',
+        name: 'AddProducts',
+        component: AddProducts
+        
+      }
+    ]
+
 },
-{
-  
-  path: '/addCategories',
-  name: 'AddCategories',
-  component: () => import(/* webpackChunkName: "Categories" */ '@/dashboard/views/AddCategories.vue')
-},
-{
-  path: '/addProducts',
-  name: 'AddProducts',
-  component: () => import(/* webpackChunkName: "Products" */ '@/dashboard/views/AddProdcuts.vue')
-},
+
+
    /////////////////////////////////  /////////////////////// //////////////// ///////
 
 ]

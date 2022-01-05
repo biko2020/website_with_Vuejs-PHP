@@ -151,13 +151,30 @@ export default {
     // *** Ajouter des enregistrements a la base de donnée
 
     create_Function() {
+      // recuperer le nom de catégorie
+      let rowData = {
+          CategorieName : this.CategorieName,
+      }
+      //converti la donnée (rowData) en chaîne JSON. 
+      rowData = JSON.stringify(rowData)
+
+      //crée un nouvel objet FormData(paires clé/valeur ).
+      //pour savoir plus-> https://developer.mozilla.org/fr/docs/Web/API/FormData
+      let formData = new FormData()
+      //la méthode append permets d'ajoute ou rajoute une nouvelle valeur a un clé.
+          formData.append('data',rowData)
+
       axios
-        .post(API_URL + "categorie", {
-          CategorieName: this.CategorieName,
-        })
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=create",formData, {             
+              config: { 
+                  headers: {'Content-Type': 'multipart/form-data' 
+                            
+                            }
+                  }         
+            })
         .then((response) => {
-          this.getDataCategorie();
-          alert(response.data);
+          //this.getDataCategorie();
+          alert(response.data.message);
         });
     },
 
