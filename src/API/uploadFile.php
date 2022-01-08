@@ -47,12 +47,12 @@ if (!empty($_FILES))  {
      // repertoir de destination
      $destination_path = 'upload/';//  $destination_path = __DIR__.'/upload/'.$image_name;
      // fichier source
-     $target_path = $destination_path . basename( $_FILES["monFichier"]["name"]);//$target_path = 'upload/' . time() . '.' . $extension;
+     $target_path =  basename( $_FILES["monFichier"]["name"]);//$target_path = 'upload/' . time() . '.' . $extension;
      // fichier temporaire
      $tmp_path = $_FILES['monFichier']['tmp_name'];
    
      // deplacer le fichier du repertoir temporaire vers le répertoir de destination 
-     if (move_uploaded_file($tmp_path, $target_path))
+     if (move_uploaded_file($tmp_path, $destination_path.$target_path))
         {
         // si oui recupere le fichier dans la variable $image   
         $message = 'image charger avec success !';

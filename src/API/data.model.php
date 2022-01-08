@@ -185,8 +185,10 @@ if (isset($_GET['action'])) {
     }
 
     if ($action == 'delete_Produit') {
+    $ImageName = '';
 
         $id = $_POST['id'];
+        $ImageName = $_POST['PhotoFileName'];
         
         $sql = "DELETE FROM products WHERE ProductId = '$id' ";
         $result = $con -> query($sql);
@@ -196,6 +198,8 @@ if (isset($_GET['action'])) {
                 $request['message'] =  "Erreur de suppression de produit";
              }
 
+    // supprimer l'image du repertoire avec la function unlink  
+    unlink('upload/'.$ImageName); 
     }
 
 $con -> close();

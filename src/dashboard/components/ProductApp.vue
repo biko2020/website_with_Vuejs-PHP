@@ -56,7 +56,7 @@
         </v-col>
         <!--  ******* appel de la fonction imageUpload ***** -->
         <v-col cols="6">
-          <img width="250px" height="250px" :src="PhotoPath + PhotoFileName" />
+          <img width="250px" height="250px" :src="PhotoPath+'upload/'+ PhotoFileName" />
           <input
             :v-bind="value"
             type="file"
@@ -299,7 +299,11 @@ export default {
       if (!confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
         return;
       }
-      let rowData = { id: id };
+      let rowData = 
+      { 
+        id: id,
+        PhotoFileName: this.PhotoFileName 
+      };
       rowData = JSON.stringify(rowData);
 
       let formData = new FormData();
@@ -316,7 +320,7 @@ export default {
           }
         )
         .then((response) => {
-          this.getDataCategorie();
+          this.getFilterProducts();
           alert(response.data.message);
         });
     },
