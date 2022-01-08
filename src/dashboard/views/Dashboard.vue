@@ -66,7 +66,7 @@
     </v-navigation-drawer> 
     <!-- Navigation bar ends -->
    <router-view></router-view>
-   <router-view></router-view>
+  
   </div>
 </template>
 

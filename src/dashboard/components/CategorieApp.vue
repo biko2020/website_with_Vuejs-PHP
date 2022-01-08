@@ -136,9 +136,12 @@ export default {
     // *** lister les catégories
 
     getDataCategorie() {
-      axios.get(API_URL + "categorie").then((response) => {
-        this.categories = response.data;
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
+      .then((response) => {
+        console.log(response.data.NameCategorie);
+        this.categories = response.data.NameCategorie;
       });
+
     },
 
     // *** editer le enregistrements
@@ -173,7 +176,7 @@ export default {
                   }         
             })
         .then((response) => {
-          //this.getDataCategorie();
+          this.getDataCategorie();
           alert(response.data.message);
         });
     },
@@ -181,28 +184,61 @@ export default {
     // *** Mettre a jour les modifications des données
 
     update_Function() {
+
+      let rowData = {
+          CategorieId : this.CategorieId,
+          CategorieName : this.CategorieName,
+      }
+      //converti la donnée (rowData) en chaîne JSON. 
+      rowData = JSON.stringify(rowData)
+
+      let formData = new FormData()
+
+          formData.append('data',rowData)
+
       axios
-        .put(API_URL + "categorie", {
-          CategorieId: this.CategorieId,
-          CategorieName: this.CategorieName,
-        })
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=update",formData, {             
+              config: { 
+                  headers: {'Content-Type': 'multipart/form-data' 
+                            
+                            }
+                  }         
+            })
         .then((response) => {
           this.getDataCategorie();
-          alert(response.data);
+          alert(response.data.message);
         });
     },
+
 
     // *** suppression des données
 
     delete_Function(id) {
-      if (!confirm("Êtes-vous sûr de vouloir supprimer ce fichier ?")) {
+      if (!confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?")) {
         return;
       }
-      axios.delete(API_URL + "categorie/" + id).then((response) => {
-        this.getDataCategorie();
-        alert(response.data);
-      });
+      
+      let rowData = {id : id,}
+          rowData = JSON.stringify(rowData)
+
+      let formData = new FormData()
+          formData.append('data',rowData)
+
+      axios
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=delete",formData, {             
+              config: { 
+                  headers: {'Content-Type': 'multipart/form-data' 
+                            
+                            }
+                  }         
+            })
+        .then((response) => {
+          this.getDataCategorie();
+          alert(response.data.message);
+        });
     },
+
+
 
     mounted: function () {
       this.getDataCategorie();
