@@ -29,6 +29,8 @@
 $_POST = json_decode($_POST['data'],true);  //decode data
 require_once 'config.php';
 
+$default_Categorie = "Matériel technique";
+
 if (isset($_GET['action'])) {
 
     $action = $_GET['action'];
@@ -104,12 +106,14 @@ if (isset($_GET['action'])) {
                 }
             $request['error'] = false;
             $request['NameCategorie'] = $NameCategorie;
-                        
+                     
             }  
             else{  
                 $request['error'] = true;
                 $request['message']=" Error!";
             }
+            // select default categorie
+            $default_Categorie = $request['NameCategorie'];   
 
     }  
     // ---> debut CRUD (Create Read Update Delete) REST API pour *** Produits
@@ -172,8 +176,29 @@ if (isset($_GET['action'])) {
                 $request['message']=" Error!";
             }
 
+    }
 
+    // selection les produits de la premier catégorier
+    if ($action == "get_default_Products") {
+        $firstCategorie = $default_Categorie;//$_POST['default_Catgetorie'];
 
+        $sql = "SELECT * FROM `products` WHERE `RefCategorie` = '$firstCategorie'";  
+            $result = $con -> query($sql);
+            $count = mysqli_num_rows($result); 
+            $NameProduct = array();
+
+            if($count > 0){  
+                while($row = $result -> fetch_assoc()) {
+                    array_push($NameProduct, $row);
+                }
+            $request['error'] = false;
+            $request['NameProduct'] = $NameProduct;
+                        
+            }  
+            else{  
+                $request['error'] = true;
+                $request['message']=" Error!";
+            }
 
     }
     // mettre a jour un produit

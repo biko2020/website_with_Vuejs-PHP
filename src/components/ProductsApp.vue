@@ -21,7 +21,7 @@
             style="width: 367px"
             @click="
               (activeDomaine = item.CategorieName),
-                
+               
                 getFilterProducts(activeDomaine),
                 Upload_Image_Product
             "
@@ -117,6 +117,7 @@ export default {
     return {
       Categories: [],
       Produits: [],
+
       activeDomaine: "",
       PhotoPath: PHOTO_URL,
       PhotoFileName: "",
@@ -128,8 +129,10 @@ export default {
     getCategories() {
       axios.get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
       .then((response) => {
-        //console.log(response.data.NameCategorie);
         this.Categories = response.data.NameCategorie;
+        
+       
+       
       });
     },
 
@@ -155,19 +158,35 @@ export default {
         });
     },
 
-
+  
     // ---* fonction chargement de l'image du produit
     Upload_Image_Product(produit) {
       this.PhotoFileName = produit.PhotoFileName;
     },
+
+    getDefaultCategorie() {
+      // selectionner la categorie par defaut pour l'afficher au démarrage
+      axios
+        .post(
+          API_URL + "Vuejs-PHP/src/API/data.model.php?action=get_default_Products"
+        )
+        .then((response) => {
+          this.Produits = response.data.NameProduct;
+         
+         
+        });
+    }
   },
 
   // ---* function mounted ---
 
   mounted: function () {
     this.getCategories();
-   // this.getFilterProducts();
-    this.Upload_Image_Product;
+    this.getDefaultCategorie();
+    // this.getFilterProducts();
+    // this.Upload_Image_Product;
+
+
   },
 };
 </script>
