@@ -154,7 +154,8 @@ export default {
     // *** Ajouter des enregistrements a la base de donnée
 
     create_Function() {
-      // recuperer le nom de catégorie
+      if (this.CategorieName != "") {
+    // recuperer le nom de catégorie
       let rowData = {
           CategorieName : this.CategorieName,
       }
@@ -179,6 +180,8 @@ export default {
           this.getDataCategorie();
           alert(response.data.message);
         });
+      }
+      
     },
 
     // *** Mettre a jour les modifications des données

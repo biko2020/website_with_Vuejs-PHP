@@ -35,9 +35,14 @@ if (isset($_GET['action'])) {
 
 }
     // ---> debut CRUD (Create Read Update Delete) REST API pour *** Categories
+
     // inserer une catégorie
     if ($action == 'create') {
-        $CategorieName = $_POST['CategorieName'];
+
+        //---permettre d' inserer les caracteres speciaux dans le texte--
+        $CategorieName = mysqli_real_escape_string($con, $_POST['CategorieName']);
+        //---------------------------------------------
+       
         
         //to prevent from mysqli injection 
         $CategorieName = stripslashes($CategorieName);
@@ -112,14 +117,23 @@ if (isset($_GET['action'])) {
     if ($action == 'createProduct') {
 
         $RefCategorie = $_POST['RefCategorie'];
-        $ProductName = $_POST['ProductName'];
-        $ProductDecrip = $_POST['ProductDecrip'];
+
+        //--permettre d' inserer les caracteres speciaux dans le texte--
+        $ProductName = mysqli_real_escape_string($con, $_POST['ProductName']);  
+        $ProductDecrip = mysqli_real_escape_string($con, $_POST['ProductDecrip']);
+
+        //$find = '&#039;';
+        //$replace = "'";
+        //$ProductDecrip = str_replace($find, $replace, $ProductDecrip); //prendre en charge l'apostrophe
+        //---------------------------------------------
+
         $PhotoFileName =  $_POST['PhotoFileName'];
+
 
         // to prevent from mysqli injection 
         $RefCategorie =  stripslashes($RefCategorie);
         $ProductName =  stripslashes($ProductName);
-        $ProductDecrip =  stripslashes($ProductDecrip);
+        //$ProductDecrip =  stripslashes($ProductDecrip);
         $PhotoFileName =  stripslashes($PhotoFileName);
 
         
@@ -137,23 +151,29 @@ if (isset($_GET['action'])) {
     }
     // filter les produits par categorie
     if ($action == 'Filter_Products') {
-        $sql = "SELECT * FROM products";  
+
+        $CategorieName = $_POST['getSelectCatory'];
+
+        $sql = "SELECT * FROM `products` WHERE `RefCategorie` = '$CategorieName'";  
             $result = $con -> query($sql);
             $count = mysqli_num_rows($result); 
-            $NameProducts = array();
+            $NameProduct = array();
 
             if($count > 0){  
                 while($row = $result -> fetch_assoc()) {
-                    array_push($NameProducts, $row);
+                    array_push($NameProduct, $row);
                 }
             $request['error'] = false;
-            $request['message'] = $NameProducts;
+            $request['NameProduct'] = $NameProduct;
                         
             }  
             else{  
                 $request['error'] = true;
                 $request['message']=" Error!";
             }
+
+
+
 
     }
     // mettre a jour un produit

@@ -41,12 +41,13 @@
           <span class="input-group-text">Déscription de Produit</span>
         </v-col>
         <v-col cols="6">
-          <input
-            type="text"
-            class="form-control"
-            v-model="ProductDescription"
-            style="width: 95%"
-          />
+        <v-textarea
+          solo
+          name="input-7-4"
+          label="déscription produit"
+          v-model="ProductDescription"
+        ></v-textarea>
+
         </v-col>
       </v-row>
       <!-- Bloc Téléchargement de l'image-->
@@ -194,7 +195,7 @@ export default {
       axios
         .get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
         .then((response) => {
-          console.log(response.data.NameCategorie);
+          //console.log(response.data.NameCategorie);
           this.categories = response.data.NameCategorie;
         });
     },
@@ -208,11 +209,16 @@ export default {
       formData.append("data", rowData);
 
       axios
-        .get(
-          API_URL + "Vuejs-PHP/src/API/data.model.php?action=Filter_Products"
+        .post(
+          API_URL + "Vuejs-PHP/src/API/data.model.php?action=Filter_Products",formData,
+            {
+              config: {
+                headers: { "Content-Type": "multipart/form-data" },
+              },
+            }
         )
         .then((response) => {
-          this.products = response.data.message;
+          this.products = response.data.NameProduct;
         });
     },
 
@@ -345,8 +351,8 @@ export default {
     },
   },
   mounted: function () {
-    this.getDataCategorie();
-    this.getFilterProducts();
+    //this.getDataCategorie();
+    //this.getFilterProducts();
     this.imageUpload();
   },
 };

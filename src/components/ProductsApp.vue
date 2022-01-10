@@ -21,7 +21,8 @@
             style="width: 367px"
             @click="
               (activeDomaine = item.CategorieName),
-                getFilterProducts(item.CategorieName),
+                
+                getFilterProducts(activeDomaine),
                 Upload_Image_Product
             "
             :color="activeDomaine === item.CategorieName ? 'success' : ''"
@@ -40,12 +41,12 @@
           <v-col
             lg="4"
             v-for="produit in Produits"
-            v-bind:key="produit.ProductId"
+            v-bind:key="produit.ProductId "
           >
             <v-card class="mx-auto my-12" max-width="374" style="height: 500px">
               <v-img
                 height="250"
-                :src="PhotoPath + produit.PhotoFileName"
+                :src="PhotoPath +'upload/'+ produit.PhotoFileName"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               >
               </v-img>
@@ -103,7 +104,7 @@ import Modal from "@/components/Modal.vue";
 import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8000/";
-const PHOTO_URL = "http://127.0.0.1:8000/Photos/";
+const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
 
 export default {
   name: "ProductsApp",
@@ -127,17 +128,33 @@ export default {
     getCategories() {
       axios.get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
       .then((response) => {
-        console.log(response.data.NameCategorie);
+        //console.log(response.data.NameCategorie);
         this.Categories = response.data.NameCategorie;
       });
     },
 
     // ---* fonction pour filtrer la liste des produits par catégorie
-    getFilterProducts(ref_categorie) {
-      axios.get(API_URL + `producte/${ref_categorie}`).then((response) => {
-        this.Produits = response.data;
-      });
+   getFilterProducts(getSelectCatory) {
+
+      let rowData = { getSelectCatory: getSelectCatory };
+      rowData = JSON.stringify(rowData);
+      let formData = new FormData();
+      formData.append("data", rowData);
+
+      axios
+        .post(
+          API_URL + "Vuejs-PHP/src/API/data.model.php?action=Filter_Products",formData,
+            {
+              config: {
+                headers: { "Content-Type": "multipart/form-data" },
+              },
+            }
+        )
+        .then((response) => {
+          this.Produits = response.data.NameProduct;
+        });
     },
+
 
     // ---* fonction chargement de l'image du produit
     Upload_Image_Product(produit) {
@@ -149,7 +166,7 @@ export default {
 
   mounted: function () {
     this.getCategories();
-    this.getFilterProducts();
+   // this.getFilterProducts();
     this.Upload_Image_Product;
   },
 };
