@@ -20,8 +20,7 @@
             v-bind:key="item.CategorieId"
             style="width: 367px"
             @click="
-              (activeDomaine = item.CategorieName),
-               
+              (activeDomaine = item.CategorieName),             
                 getFilterProducts(activeDomaine),
                 Upload_Image_Product
             "
@@ -117,8 +116,7 @@ export default {
     return {
       Categories: [],
       Produits: [],
-
-      activeDomaine: "",
+      default_Catgetorie:"Groupes électrogènes-pompes",
       PhotoPath: PHOTO_URL,
       PhotoFileName: "",
     };
@@ -131,8 +129,6 @@ export default {
       .then((response) => {
         this.Categories = response.data.NameCategorie;
         
-       
-       
       });
     },
 
@@ -165,10 +161,20 @@ export default {
     },
 
     getDefaultCategorie() {
+      let rowData = {default_Catgetorie : this.default_Catgetorie };
+      rowData = JSON.stringify(rowData);
+      let formData = new FormData();
+      formData.append('data',rowData);
+
       // selectionner la categorie par defaut pour l'afficher au démarrage
       axios
         .post(
-          API_URL + "Vuejs-PHP/src/API/data.model.php?action=get_default_Products"
+          API_URL + "Vuejs-PHP/src/API/data.model.php?action=get_default_Products",formData,
+            {
+              config: {
+                headers: { "Content-Type": "multipart/form-data" },
+              },
+            }
         )
         .then((response) => {
           this.Produits = response.data.NameProduct;

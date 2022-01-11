@@ -29,7 +29,6 @@
 $_POST = json_decode($_POST['data'],true);  //decode data
 require_once 'config.php';
 
-$default_Categorie = "Matériel technique";
 
 if (isset($_GET['action'])) {
 
@@ -39,7 +38,7 @@ if (isset($_GET['action'])) {
     // ---> debut CRUD (Create Read Update Delete) REST API pour *** Categories
 
     // inserer une catégorie
-    if ($action == 'create') {
+    if ($action == 'create_Categories') {
 
         //---permettre d' inserer les caracteres speciaux dans le texte--
         $CategorieName = mysqli_real_escape_string($con, $_POST['CategorieName']);
@@ -64,12 +63,20 @@ if (isset($_GET['action'])) {
 
     }
     // mettre ajour une catégorie 
-    if ($action == 'update') {
-
+    if ($action == 'update_Categorie') {
+        
+        //recupere les variables poster 
         $CategorieId = $_POST['CategorieId'];
         $CategorieName = $_POST['CategorieName'];
-
+        $OriginCategorie = $_POST['OriginCategorie'];
+        
+       //contre les injection sql
         $CategorieName = stripslashes($CategorieName);
+
+        
+        $sql_updateProduct = "UPDATE `products` SET `RefCategorie`='$CategorieName' WHERE `RefCategorie`='$OriginCategorie'";
+        $con -> query($sql_updateProduct);
+
 
         $sql = "UPDATE categorie SET CategorieName = '$CategorieName' WHERE CategorieId = '$CategorieId'";
         $result = $con -> query($sql);
@@ -79,10 +86,17 @@ if (isset($_GET['action'])) {
                 $request['message'] = "Erreur de Modification des données ..!";
             }
 
+            
     }
     // supprimer une catégorie
-    if ($action == 'delete') {
+    if ($action == 'delete_Categorie') {
+
         $id = $_POST['id'];
+        $OriginCategorie = $_POST['Origin_Categorie'];
+
+
+        $sql_delete_Product = "DELETE FROM products WHERE RefCategorie = '$OriginCategorie' ";
+        $result = $con -> query($sql_delete_Product);
         
         $sql = "DELETE FROM categorie WHERE CategorieId = '$id' ";
         $result = $con -> query($sql);
@@ -112,8 +126,8 @@ if (isset($_GET['action'])) {
                 $request['error'] = true;
                 $request['message']=" Error!";
             }
-            // select default categorie
-            $default_Categorie = $request['NameCategorie'];   
+            
+ 
 
     }  
     // ---> debut CRUD (Create Read Update Delete) REST API pour *** Produits
@@ -180,7 +194,7 @@ if (isset($_GET['action'])) {
 
     // selection les produits de la premier catégorier
     if ($action == "get_default_Products") {
-        $firstCategorie = $default_Categorie;//$_POST['default_Catgetorie'];
+        $firstCategorie = $_POST['default_Catgetorie'];
 
         $sql = "SELECT * FROM `products` WHERE `RefCategorie` = '$firstCategorie'";  
             $result = $con -> query($sql);
@@ -203,7 +217,7 @@ if (isset($_GET['action'])) {
     }
     // mettre a jour un produit
     if ($action == 'Update_Product') {
-
+    
         $ProductId = $_POST['ProductId'];
         $ProductName = $_POST['ProductName'];
         $RefCategorie = $_POST['RefCategorie'];

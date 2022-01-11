@@ -129,6 +129,7 @@ export default {
       Title: "",
       CategorieId: 0,
       CategorieName: "",
+      Origin_Categorie:"",
     };
   },
 
@@ -149,6 +150,7 @@ export default {
     edit_Function(item) {
       this.CategorieId = item.CategorieId;
       this.CategorieName = item.CategorieName;
+      this.Origin_Categorie = item.CategorieName;
     },
 
     // *** Ajouter des enregistrements a la base de donnée
@@ -169,7 +171,7 @@ export default {
           formData.append('data',rowData)
 
       axios
-        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=create",formData, {             
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=create_Categories",formData, {             
               config: { 
                   headers: {'Content-Type': 'multipart/form-data' 
                             
@@ -191,6 +193,7 @@ export default {
       let rowData = {
           CategorieId : this.CategorieId,
           CategorieName : this.CategorieName,
+          OriginCategorie : this.Origin_Categorie,
       }
       //converti la donnée (rowData) en chaîne JSON. 
       rowData = JSON.stringify(rowData)
@@ -200,7 +203,7 @@ export default {
           formData.append('data',rowData)
 
       axios
-        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=update",formData, {             
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=update_Categorie",formData, {             
               config: { 
                   headers: {'Content-Type': 'multipart/form-data' 
                             
@@ -221,14 +224,17 @@ export default {
         return;
       }
       
-      let rowData = {id : id,}
+      let rowData = {
+        id : id,
+        Origin_Categorie : this.CategorieName,
+      }
           rowData = JSON.stringify(rowData)
 
       let formData = new FormData()
           formData.append('data',rowData)
 
       axios
-        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=delete",formData, {             
+        .post(API_URL + "Vuejs-PHP/src/API/data.model.php?action=delete_Categorie",formData, {             
               config: { 
                   headers: {'Content-Type': 'multipart/form-data' 
                             
