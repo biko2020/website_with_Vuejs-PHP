@@ -89,7 +89,7 @@
                 <!-- *** Appel de la fonction delete -->
                 <button
                   type="button"
-                  @click="delete_Function(item.CategorieId)"
+                  @click="delete_Function(item.CategorieId,item.CategorieName)"
                   class="btn btn-light mr-1"
                 >
                   <svg
@@ -219,14 +219,14 @@ export default {
 
     // *** suppression des données
 
-    delete_Function(id) {
+    delete_Function(id,Name) {
       if (!confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?")) {
         return;
       }
       
       let rowData = {
         id : id,
-        Origin_Categorie : this.CategorieName,
+        Name_Categorie : Name,
       }
           rowData = JSON.stringify(rowData)
 

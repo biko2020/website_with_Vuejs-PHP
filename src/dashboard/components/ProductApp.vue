@@ -34,6 +34,12 @@
             v-model="ProductName"
             style="width: 95%"
           />
+          <input 
+          type="text"
+          class="form-control"
+          :value="ImageToDelete"
+          style="width:95%"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -43,6 +49,7 @@
         <v-col cols="6">
         <v-textarea
           solo
+          
           name="input-7-4"
           label="déscription produit"
           v-model="ProductDescription"
@@ -56,7 +63,7 @@
           <span> Choisir l'image </span>
         </v-col>
         <!--  ******* appel de la fonction imageUpload ***** -->
-        <v-col cols="6">
+        <v-col cols="6" >
           <img width="250px" height="250px" :src="PhotoPath+'upload/'+ PhotoFileName" />
           <input
             :v-bind="value"
@@ -100,7 +107,9 @@
               <th>Catégorie</th>
               <th>Name de Produit</th>
               <th>Description</th>
+              <th>image</th>
               <th>Opérations</th>
+              
             </tr>
           </thead>
 
@@ -111,6 +120,9 @@
               <td>{{ item.RefCategorie }}</td>
               <td>{{ item.ProductName }}</td>
               <td>{{ item.ProductDecrip }}</td>
+              <td>
+                <img width="100px" height="100px" :src="PhotoPath+'upload/'+ item.PhotoFileName" />
+                </td>
               <td>
                 <!-- **** fonction Edite **** -->
                 <button
@@ -185,6 +197,10 @@ export default {
       monFichier: "",
       PhotoFileName: "logo.png",
       PhotoPath: PHOTO_URL,
+
+      ImageToDelete : "",
+      
+      
     };
   },
 
@@ -219,6 +235,11 @@ export default {
         )
         .then((response) => {
           this.products = response.data.NameProduct;
+          // vider les champs imput, textarea, image par defaut
+          this.PhotoFileName = "logo.png";
+          this.ProductName = "";
+          this.ProductDescription = "";
+
         });
     },
 
@@ -230,6 +251,8 @@ export default {
       this.ProductName = item.ProductName;
       this.ProductDescription = item.ProductDecrip;
       this.PhotoFileName = item.PhotoFileName;
+      this.ImageToDelete = item.PhotoFileName;
+
     },
 
     // **** Ajouter les enregistrements
@@ -253,7 +276,7 @@ export default {
 
         axios
           .post(
-            API_URL + "Vuejs-PHP/src/API/data.model.php?action=createProduct",
+            API_URL + "Vuejs-PHP/src/API/data.model.php?action=create_Product",
             formData,
             {
               config: {
@@ -277,6 +300,7 @@ export default {
         RefCategorie: this.SelectCategory,
         ProductDecrip: this.ProductDescription,
         PhotoFileName: this.PhotoFileName,
+        ImageToDelete: this.ImageToDelete,
       };
       //converti la donnée (rowData) en chaîne JSON.
       rowData = JSON.stringify(rowData);
@@ -346,7 +370,7 @@ export default {
         .then((response) => {
           this.PhotoFileName = response.data.image;
           alert(this.PhotoFileName);
-          console.log(this.PhotoFileName);
+         
         });
     },
   },

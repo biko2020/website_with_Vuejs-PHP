@@ -92,7 +92,7 @@ if (isset($_GET['action'])) {
     if ($action == 'delete_Categorie') {
 
         $id = $_POST['id'];
-        $OriginCategorie = $_POST['Origin_Categorie'];
+        $OriginCategorie = $_POST['Name_Categorie'];
 
 
         $sql_delete_Product = "DELETE FROM products WHERE RefCategorie = '$OriginCategorie' ";
@@ -132,7 +132,7 @@ if (isset($_GET['action'])) {
     }  
     // ---> debut CRUD (Create Read Update Delete) REST API pour *** Produits
     // Enregister un nouveau produit
-    if ($action == 'createProduct') {
+    if ($action == 'create_Product') {
 
         $RefCategorie = $_POST['RefCategorie'];
 
@@ -223,8 +223,10 @@ if (isset($_GET['action'])) {
         $RefCategorie = $_POST['RefCategorie'];
         $ProductDecrip = $_POST['ProductDecrip'];
         $PhotoFileName =  $_POST['PhotoFileName'];
-
+        $ImageToDelete = $_POST['ImageToDelete'];
         
+        // supprimer l'ancien image dans le repertoir upload par l'image actuelle
+        unlink('upload/'.$ImageToDelete); 
 
         // to prevent from mysqli injection 
         $ProductId =  stripslashes($ProductId);
