@@ -35,7 +35,7 @@
             style="width: 95%"
           />
           <input 
-          type="text"
+          type="hidden"
           class="form-control"
           :value="ImageToDelete"
           style="width:95%"
@@ -236,9 +236,9 @@ export default {
         .then((response) => {
           this.products = response.data.NameProduct;
           // vider les champs imput, textarea, image par defaut
-          this.PhotoFileName = "logo.png";
-          this.ProductName = "";
-          this.ProductDescription = "";
+            this.PhotoFileName = "logo.png";
+            this.ProductName = "";
+            this.ProductDescription = "";
 
         });
     },
@@ -287,7 +287,12 @@ export default {
           .then((response) => {
             // this.getDataCategorie();
             alert(response.data.message);
+          // vider les champs imput, textarea, image par defaut
+               this.PhotoFileName = "logo.png";
+               this.ProductName = "";
+               this.ProductDescription = "";
           });
+          
       }
     },
 
@@ -321,6 +326,10 @@ export default {
         )
         .then((response) => {
           alert(response.data.message);
+          // vider les champs imput, textarea, image par defaut
+             this.PhotoFileName = "logo.png";
+             this.ProductName = "";
+             this.ProductDescription = "";
         });
     },
     // **** Suppression des enregistrements
@@ -375,9 +384,9 @@ export default {
     },
   },
   mounted: function () {
-    //this.getDataCategorie();
-    //this.getFilterProducts();
-    this.imageUpload();
+     this.getDataCategorie();
+     this.getFilterProducts();
+     this.imageUpload();
   },
 };
 </script>

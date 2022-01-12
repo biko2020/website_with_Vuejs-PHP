@@ -28,6 +28,13 @@
             class="mx-5 my-5 justify-center"
             >{{ item.CategorieName }}</v-chip
           >
+       <input
+       type = "text"
+       style = "width:95%"
+       class="form-control"
+       :value="defaultCatgetorie"
+       :name="defaultCatgetorie"
+       />
         </div>
       </v-row>
 
@@ -116,7 +123,7 @@ export default {
     return {
       Categories: [],
       Produits: [],
-      default_Catgetorie:"Groupes électrogènes-pompes",
+      defaultCatgetorie:"",
       PhotoPath: PHOTO_URL,
       PhotoFileName: "",
     };
@@ -125,9 +132,11 @@ export default {
   methods: {
     // ---* fonction pour récuperer la liste des catégories
     getCategories() {
+      
       axios.get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
       .then((response) => {
         this.Categories = response.data.NameCategorie;
+        this.defaultCatgetorie = this.Categories[0].CategorieName;
         
       });
     },
@@ -151,6 +160,7 @@ export default {
         )
         .then((response) => {
           this.Produits = response.data.NameProduct;
+          
         });
     },
 
@@ -159,9 +169,12 @@ export default {
     Upload_Image_Product(produit) {
       this.PhotoFileName = produit.PhotoFileName;
     },
-
-    getDefaultCategorie() {
-      let rowData = {default_Catgetorie : this.default_Catgetorie };
+    // afficher les produits d'une categorie au chargement de la parge d'une maniere aléatoire
+    getDefaultProducts() {
+      
+      let rowData = {
+           defaultCatgetorie : "Matériel technique"
+        };
       rowData = JSON.stringify(rowData);
       let formData = new FormData();
       formData.append('data',rowData);
@@ -178,7 +191,9 @@ export default {
         )
         .then((response) => {
           this.Produits = response.data.NameProduct;
+          console.log('*****'+ this.defaultCatgetorie);
          
+          
          
         });
     }
@@ -188,8 +203,8 @@ export default {
 
   mounted: function () {
     this.getCategories();
-    this.getDefaultCategorie();
-    // this.getFilterProducts();
+    this.getDefaultProducts();
+    //this.getFilterProducts();
     // this.Upload_Image_Product;
 
 

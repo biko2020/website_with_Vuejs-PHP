@@ -44,7 +44,9 @@ if (isset($_GET['action'])) {
         $CategorieName = mysqli_real_escape_string($con, $_POST['CategorieName']);
         //---------------------------------------------
        
-        
+        // fonction pour remplacer l'apostrophe 
+        $CategorieName = str_replace("'", "", $CategorieName);
+
         //to prevent from mysqli injection 
         $CategorieName = stripslashes($CategorieName);
         
@@ -69,8 +71,11 @@ if (isset($_GET['action'])) {
         $CategorieId = $_POST['CategorieId'];
         $CategorieName = $_POST['CategorieName'];
         $OriginCategorie = $_POST['OriginCategorie'];
+
+        // fonction pour remplacer l'apostrophe 
+         $CategorieName = str_replace("'", "", $CategorieName);
         
-       //contre les injection sql
+        //contre les injection sql
         $CategorieName = stripslashes($CategorieName);
 
         
@@ -112,6 +117,8 @@ if (isset($_GET['action'])) {
         $sql = "SELECT * FROM categorie";  
             $result = $con -> query($sql);
             $count = mysqli_num_rows($result); 
+            
+
             $NameCategorie = array();
 
             if($count > 0){  
@@ -120,7 +127,7 @@ if (isset($_GET['action'])) {
                 }
             $request['error'] = false;
             $request['NameCategorie'] = $NameCategorie;
-                     
+                                 
             }  
             else{  
                 $request['error'] = true;
@@ -147,11 +154,14 @@ if (isset($_GET['action'])) {
 
         $PhotoFileName =  $_POST['PhotoFileName'];
 
+        // fonction pour remplacer l'apostrophe 
+        $ProductName = str_replace("'", "", $ProductName);
+        $ProductDecrip = str_replace("'", "", $ProductDecrip);
 
         // to prevent from mysqli injection 
         $RefCategorie =  stripslashes($RefCategorie);
-        $ProductName =  stripslashes($ProductName);
-        //$ProductDecrip =  stripslashes($ProductDecrip);
+        $ProductName =   stripslashes($ProductName);
+        $ProductDecrip =  stripslashes($ProductDecrip);
         $PhotoFileName =  stripslashes($PhotoFileName);
 
         
@@ -194,27 +204,33 @@ if (isset($_GET['action'])) {
 
     // selection les produits de la premier catégorier
     if ($action == "get_default_Products") {
-        $firstCategorie = $_POST['default_Catgetorie'];
 
+          
+        if (isset($_POST['defaultCatgetorie'])){
+            $firstCategorie = $_POST['defaultCatgetorie'];
+            
+
+        }      
+                
         $sql = "SELECT * FROM `products` WHERE `RefCategorie` = '$firstCategorie'";  
             $result = $con -> query($sql);
-            $count = mysqli_num_rows($result); 
-            $NameProduct = array();
+             $count = mysqli_num_rows($result); 
+             $NameProduct = array();
 
-            if($count > 0){  
-                while($row = $result -> fetch_assoc()) {
-                    array_push($NameProduct, $row);
-                }
-            $request['error'] = false;
-            $request['NameProduct'] = $NameProduct;
+             if($count > 0){  
+                 while($row = $result -> fetch_assoc()) {
+                     array_push($NameProduct, $row);
+                 }
+             $request['error'] = false;
+             $request['NameProduct'] = $NameProduct ;
                         
-            }  
-            else{  
-                $request['error'] = true;
-                $request['message']=" Error!";
-            }
-
+             }  
+             else{  
+                 $request['error'] = true;
+                 $request['message']=" Error!";
+             }
     }
+    
     // mettre a jour un produit
     if ($action == 'Update_Product') {
     
@@ -225,20 +241,27 @@ if (isset($_GET['action'])) {
         $PhotoFileName =  $_POST['PhotoFileName'];
         $ImageToDelete = $_POST['ImageToDelete'];
         
-        // supprimer l'ancien image dans le repertoir upload par l'image actuelle
-        unlink('upload/'.$ImageToDelete); 
+        // fonction pour remplacer l'apostrophe 
+        $ProductName = str_replace("'", "", $ProductName);
+        $ProductDecrip = str_replace("'", "", $ProductDecrip);
 
         // to prevent from mysqli injection 
         $ProductId =  stripslashes($ProductId);
         $RefCategorie = stripslashes($RefCategorie);
         $ProductName =  stripslashes($ProductName);
-        $ProductDecrip =  stripslashes($ProductDecrip);
+        $ProductDecrip = stripslashes($ProductDecrip);
         $PhotoFileName =  stripslashes($PhotoFileName);
+        $ImageToDelete = stripslashes($ImageToDelete);
 
         $sql = "UPDATE `products` SET `RefCategorie`='$RefCategorie',`ProductName`='$ProductName',`ProductDecrip`='$ProductDecrip',`PhotoFileName`='$PhotoFileName' WHERE `ProductId`='$ProductId'";
         $result = $con -> query($sql);
             if ($result === true) {
                 $request['message'] = "la modification des données réussi";
+                // supprimer l'ancien image dans le repertoir upload par l'image actuelle
+                if ($ImageToDelete != $PhotoFileName) {
+                    unlink('upload/'.$ImageToDelete); 
+                }
+                   
             } else {
                 $request['message'] = "Erreur de Modification des données ..!";
             }
@@ -262,6 +285,8 @@ if (isset($_GET['action'])) {
     // supprimer l'image du repertoire avec la function unlink  
     unlink('upload/'.$ImageName); 
     }
+   
+ 
 
 $con -> close();
 echo json_encode($request);// encode Data

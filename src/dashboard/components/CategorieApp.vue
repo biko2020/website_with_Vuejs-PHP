@@ -181,6 +181,7 @@ export default {
         .then((response) => {
           this.getDataCategorie();
           alert(response.data.message);
+          this.CategorieName = "";
         });
       }
       
