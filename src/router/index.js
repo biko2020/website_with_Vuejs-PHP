@@ -3,10 +3,12 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Cpanel from '../dashboard/views/Admin.vue'
 
+// import pour dashboard
 import Dashboard from '../dashboard/views/Dashboard.vue'
 import Welcome from '../dashboard/views/Welcome.vue'
 import AddCategories from '../dashboard/views/AddCategories.vue'
 import AddProducts from '../dashboard/views/AddProdcuts.vue'
+import AddSlides from '../dashboard/views/AddSlides.vue'
 
 
 
@@ -78,6 +80,11 @@ const routes = [
         name: 'AddProducts',
         component: AddProducts
         
+      },
+      {
+        path: '/addSlides',
+        name: 'AddSlides',
+        component: AddSlides
       }
     ]
 

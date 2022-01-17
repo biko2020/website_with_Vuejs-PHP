@@ -55,7 +55,7 @@ if (isset($_GET['action'])) {
         $result = $con -> query($sql);
 
             if($result === true){  
-                    $request['message'] = "Catégorie Enregistrer avec success";
+                    $request['message'] = "Catégorie Enregistrer avec succés";
                                 
                     }  
                     else{  
@@ -169,7 +169,7 @@ if (isset($_GET['action'])) {
         $result = $con -> query($sql);
 
             if($result === true){  
-                $request['message'] = "Produit Enregistrer avec success";  
+                $request['message'] = "Produit Enregistrer avec succés";  
             }  
             else{  
                 $request['error'] = true;
@@ -267,7 +267,7 @@ if (isset($_GET['action'])) {
             }
 
     }
-
+// supprimer un produit
     if ($action == 'delete_Produit') {
     $ImageName = '';
 

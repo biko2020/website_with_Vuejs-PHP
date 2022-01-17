@@ -28,13 +28,7 @@
             class="mx-5 my-5 justify-center"
             >{{ item.CategorieName }}</v-chip
           >
-       <input
-       type = "text"
-       style = "width:95%"
-       class="form-control"
-       :value="defaultCatgetorie"
-       :name="defaultCatgetorie"
-       />
+      
         </div>
       </v-row>
 
@@ -123,7 +117,7 @@ export default {
     return {
       Categories: [],
       Produits: [],
-      defaultCatgetorie:"",
+      defaultCatgetorie: "Matériel technique",
       PhotoPath: PHOTO_URL,
       PhotoFileName: "",
     };
@@ -173,7 +167,7 @@ export default {
     getDefaultProducts() {
       
       let rowData = {
-           defaultCatgetorie : "Matériel technique"
+         defaultCatgetorie :this.defaultCatgetorie
         };
       rowData = JSON.stringify(rowData);
       let formData = new FormData();

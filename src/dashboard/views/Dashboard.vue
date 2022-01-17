@@ -83,6 +83,8 @@ export default {
          { title: "LogOut", route: "/admin" },
          { title: "Ajouter Categories", route: "addCategories" },
          { title: "Ajouter Produits", route: "addProducts" },
+         { title: "Ajouter Slide", route: "addSlides" },
+       
 
        ],
      };

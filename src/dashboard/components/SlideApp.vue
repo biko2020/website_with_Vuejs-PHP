@@ -4,34 +4,18 @@
       <v-row no-gutters>
         <v-col cols="3"> </v-col>
         <v-col cols="6">
-          <!-- ***** *** chargement des categories **********-->
-          <v-select
-            v-if="categories"
-            v-bind:items="categories"
-            v-model="SelectCategory"
-            label="Sélectionner une Catégorie"
-            single-line
-            item-text="CategorieName"
-            item-value="CategorieId"
-            return-object
-            bottom
-            @click="getDataCategorie"
-            @input="getFilterProducts(`${SelectCategory.CategorieName}`)"
-            :hint="`${SelectCategory.CategorieName}`"
-          >
-          </v-select>
-          <!--  ******* --------------------------------***** -->
+         
         </v-col>
       </v-row>
       <v-row no-gutters>
         <v-col cols="3">
-          <span class="input-group-text">Entrer le nom de Produit</span>
+          <span class="input-group-text">Entrer le titre du Slide</span>
         </v-col>
         <v-col cols="6">
           <input
             type="text"
             class="form-control"
-            v-model="ProductName"
+            v-model="SlideName"
             style="width: 95%"
           />
           <input 
@@ -44,15 +28,14 @@
       </v-row>
       <v-row>
         <v-col cols="3">
-          <span class="input-group-text">Déscription de Produit</span>
+          <span class="input-group-text">Déscription du slide</span>
         </v-col>
         <v-col cols="6">
         <v-textarea
           solo
-          
           name="input-7-4"
-          label="déscription produit"
-          v-model="ProductDescription"
+          label="déscription slide"
+          v-model="SlideDescription"
         ></v-textarea>
 
         </v-col>
@@ -64,7 +47,7 @@
         </v-col>
         <!--  ******* appel de la fonction imageUpload ***** -->
         <v-col cols="6" >
-          <img width="250px" height="250px" :src="PhotoPath+'upload/'+ PhotoFileName" />
+          <img width="250px" height="250px" :src="PhotoPath+'uploadSlide/'+ PhotoFileName" />
           <input
             :v-bind="value"
             type="file"
@@ -82,7 +65,7 @@
           <button
             type="button"
             @click="create_Function()"
-            v-if="ProductId == 0"
+            v-if="id == 0"
             class="btn btn-primary"
           >
             Ajouter
@@ -90,7 +73,7 @@
           <button
             type="button"
             @click="update_Function()"
-            v-if="ProductId != 0"
+            v-if="id != 0"
             class="btn btn-primary"
           >
             Mettre à jour
@@ -103,9 +86,8 @@
         <table class="table is-fullwidth">
           <thead>
             <tr>
-              <th>N° Produit</th>
-              <th>Catégorie</th>
-              <th>Name de Produit</th>
+              <th>N° Slide</th>
+              <th>Name du Slide</th>
               <th>Description</th>
               <th>image</th>
               <th>Opérations</th>
@@ -115,19 +97,15 @@
 
           <tbody>
             <!-- **** boucle recuperer des enregistrements Produits depuis la db **** -->
-            <tr v-for="item in products" v-bind:key="item.ProductId">
-              <td>{{ item.ProductId }}</td>
-              <td>{{ item.RefCategorie }}</td>
-              <td>{{ item.ProductName }}</td>
-              <td>{{ item.ProductDecrip }}</td>
-              <td>
-                <img width="100px" height="100px" :src="PhotoPath+'upload/'+ item.PhotoFileName" />
-                </td>
+            <tr v-for="item in slides" v-bind:key="item.id">
+              <td>{{ item.id }}</td>
+              <td>{{ item.titre }}</td>
+              <td>{{ item.description }}</td>
+              <td><img width="100px" height="100px" :src="PhotoPath+'uploadSlide/'+ item.PhotoFileName" /></td>
               <td>
                 <!-- **** fonction Edite **** -->
                 <button
                   type="button"
-                  class="btn btn-light mr-1"
                   @click="edit_Function(item)"
                 >
                   <svg
@@ -147,10 +125,11 @@
                     />
                   </svg>
                 </button>
+
                 <!-- **** fonction delete **** -->
                 <button
                   type="button"
-                  @click="delete_Function(item.ProductId)"
+                  @click="delete_Function(item.id)"
                   class="btn btn-light mr-1"
                 >
                   <svg
@@ -183,16 +162,15 @@ const API_URL = "http://127.0.0.1:8000/";
 const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
 
 export default {
-  name: "ProductApp",
+  name: "SlideApp",
 
   data() {
     return {
-      categories: [],
-      SelectCategory: "",
-      products: [],
-      ProductId: 0,
-      ProductName: "",
-      ProductDescription: "",
+
+      slides: [],
+      id: 0,
+      SlideName: "",
+      SlideDescription: "",
       monFichier: "",
       PhotoFileName: "logo.png",
       PhotoPath: PHOTO_URL,
@@ -204,64 +182,36 @@ export default {
   },
 
   methods: {
-    // **** Recuperer la liste des categories
+    // **** Recuperer la liste des Slide
 
-    getDataCategorie() {
-      axios
-        .get(API_URL + "Vuejs-PHP/src/API/data.model.php?action=getCategorie")
-        .then((response) => {
-          //console.log(response.data.NameCategorie);
-          this.categories = response.data.NameCategorie;
-        });
-    },
+     getDataSlide() {
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=getSlide")
+         .then((response) => {
+           this.slides = response.data.NameSlide;
+          
+         });
+     },
 
-    // ****  filtrer les produits par catégorie
-
-    getFilterProducts(getSelectCatory) {
-      let rowData = { getSelectCatory: getSelectCatory };
-      rowData = JSON.stringify(rowData);
-      let formData = new FormData();
-      formData.append("data", rowData);
-
-      axios
-        .post(
-          API_URL + "Vuejs-PHP/src/API/data.model.php?action=Filter_Products",formData,
-            {
-              config: {
-                headers: { "Content-Type": "multipart/form-data" },
-              },
-            }
-        )
-        .then((response) => {
-          this.products = response.data.NameProduct;
-          // vider les champs imput, textarea, image par defaut
-            this.PhotoFileName = "logo.png";
-            this.ProductName = "";
-            this.ProductDescription = "";
-
-        });
-    },
-
+   
     // **** Edition des enregistrements
 
-    edit_Function(item) {
-      this.ProductId = item.ProductId;
-      this.SelectCategory = item.RefCategorie;
-      this.ProductName = item.ProductName;
-      this.ProductDescription = item.ProductDecrip;
-      this.PhotoFileName = item.PhotoFileName;
-      this.ImageToDelete = item.PhotoFileName;
+     edit_Function(item) {
+       this.id = item.id;
+       this.SlideName = item.titre;
+       this.SlideDescription = item.description;
+       this.PhotoFileName = item.PhotoFileName;
+       this.ImageToDelete = item.PhotoFileName;
 
     },
 
-    // **** Ajouter les enregistrements
+    // **** Ajouter des enregistrements
     create_Function() {
-      if (this.ProductName != "") {
-        // recuperer le nom des produits
+      if (this.SlideName != "") {
+
         let rowData = {
-          RefCategorie: this.SelectCategory.CategorieName,
-          ProductName: this.ProductName,
-          ProductDecrip: this.ProductDescription,
+         
+          SlideName: this.SlideName,
+          SlideDescription: this.SlideDescription,
           PhotoFileName: this.PhotoFileName,
         };
         //converti la donnée (rowData) en chaîne JSON.
@@ -275,7 +225,7 @@ export default {
 
         axios
           .post(
-            API_URL + "Vuejs-PHP/src/API/data.model.php?action=create_Product",
+            API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=create_Slide",
             formData,
             {
               config: {
@@ -284,12 +234,13 @@ export default {
             }
           )
           .then((response) => {
-            // this.getDataCategorie();
             alert(response.data.message);
+
+              this.getDataSlide();
           // vider les champs imput, textarea, image par defaut
                this.PhotoFileName = "logo.png";
-               this.ProductName = "";
-               this.ProductDescription = "";
+               this.SlideName = "";
+               this.SlideDescription = "";
           });
           
       }
@@ -297,71 +248,69 @@ export default {
 
     // **** Modification des enregistrements
 
-    update_Function() {
-      let rowData = {
-        ProductId: this.ProductId,
-        ProductName: this.ProductName,
-        RefCategorie: this.SelectCategory,
-        ProductDecrip: this.ProductDescription,
-        PhotoFileName: this.PhotoFileName,
-        ImageToDelete: this.ImageToDelete,
-      };
-      //converti la donnée (rowData) en chaîne JSON.
-      rowData = JSON.stringify(rowData);
+     update_Function() {
+       let rowData = {
+         id: this.id,
+         SlideName: this.SlideName,
+         SlideDescription: this.SlideDescription,
+         PhotoFileName: this.PhotoFileName,
+         ImageToDelete: this.ImageToDelete,
+       };
+       //converti la donnée (rowData) en chaîne JSON.
+       rowData = JSON.stringify(rowData);
 
-      let formData = new FormData();
+       let formData = new FormData();
 
-      formData.append("data", rowData);
+       formData.append("data", rowData);
 
-      axios
-        .post(
-          API_URL + "Vuejs-PHP/src/API/data.model.php?action=Update_Product",
-          formData,
-          {
-            config: {
-              headers: { "Content-Type": "multipart/form-data" },
-            },
-          }
-        )
-        .then((response) => {
-          alert(response.data.message);
-          // vider les champs imput, textarea, image par defaut
-             this.PhotoFileName = "logo.png";
-             this.ProductName = "";
-             this.ProductDescription = "";
-        });
+       axios
+         .post(
+           API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=Update_Slide",
+           formData,
+           {
+             config: {
+               headers: { "Content-Type": "multipart/form-data" },
+             },
+           }
+         )
+         .then((response) => {
+           alert(response.data.message);
+           // vider les champs imput, textarea, image par defaut
+              this.PhotoFileName = "logo.png";
+              this.SlideName = "";
+              this.SlideDescription = "";
+         });
     },
     // **** Suppression des enregistrements
 
-    delete_Function(id) {
-      if (!confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
-        return;
-      }
-      let rowData = 
-      { 
-        id: id,
-        PhotoFileName: this.PhotoFileName 
-      };
-      rowData = JSON.stringify(rowData);
+     delete_Function(id) {
+       if (!confirm("Êtes-vous sûr de vouloir supprimer ce slide ?")) {
+         return;
+       }
+       let rowData = 
+       { 
+         id: id,
+         PhotoFileName: this.PhotoFileName 
+       };
+       rowData = JSON.stringify(rowData);
+       let formData = new FormData();
+       formData.append("data", rowData);
 
-      let formData = new FormData();
-      formData.append("data", rowData);
-
-      axios
-        .post(
-          API_URL + "Vuejs-PHP/src/API/data.model.php?action=delete_Produit",
-          formData,
-          {
-            config: {
-              headers: { "Content-Type": "multipart/form-data" },
-            },
-          }
-        )
-        .then((response) => {
-          this.getFilterProducts();
-          alert(response.data.message);
-        });
-    },
+       axios
+         .post(
+           API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=delete_Slide",
+           formData,
+           {
+             config: {
+               headers: { "Content-Type": "multipart/form-data" },
+             },
+           }
+         )
+         .then((response) => {
+          this.getDataSlide();
+           alert(response.data.message);
+         });
+     },
 
     // ****  Télechargement de l'images
 
@@ -369,7 +318,7 @@ export default {
       let formData = new FormData();
       formData.append("monFichier", event.target.files[0]);
       axios
-        .post(API_URL + "Vuejs-PHP/src/API/uploadFile.php?action=products", formData, {
+        .post(API_URL + "Vuejs-PHP/src/API/uploadFile.php?action=slide", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             //'enctype': 'multipart/form-data'
@@ -383,9 +332,9 @@ export default {
     },
   },
   mounted: function () {
-     this.getDataCategorie();
-     this.getFilterProducts();
-     this.imageUpload();
+    this.getDataSlide();
+    //this.update_Function();
+    this.imageUpload();
   },
 };
 </script>

@@ -2,23 +2,24 @@
   <v-app>
     <v-main>
       <v-content>
-        <v-container fill-height fluid class="my-15 ">
+        <v-container fill-height fluid class="my-15">
           <v-row>
             <v-col>
               <carousel-3d
                 :height="600"
                 :width="500"
                 :border="1"
-                @load="slideHeight()"
+                @load="slideHeight(),
+                Upload_Image_Slide"
               >
-                <slide v-for="(slid, i) in slid3dImg" :key="i" :index="i">
+                <slide v-for="slidImg in slid3dImg" :key="slidImg.id" >
                   <figure>
-                    <v-img :src="slid.image"> </v-img>
+                    <v-img :src="PhotoPath +'uploadSlide/'+ slidImg.PhotoFileName"> </v-img>
                   </figure>
                   <hr />
-                  <h5 class="txt-slide-titre">{{ slid.title }}</h5>
+                  <h5 class="txt-slide-titre">{{ slidImg.titre }}</h5>
                   <figcaption>
-                    <p>{{ slid.sousTitle }}</p>
+                    <p>{{ slidImg.description }}</p>
                   </figcaption>
                 </slide>
               </carousel-3d>
@@ -99,7 +100,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <div class="row-gris-fonce  bloc-gris">
+            <div class="row-gris-fonce bloc-gris">
               <div class="container py-5">
                 <div
                   class="row pt-md-5 aos-init aos-animate"
@@ -211,8 +212,12 @@
 
 <script>
 import { Carousel3d, Slide } from "vue-carousel-3d";
-
 import Nosrefence from "../components/Nosreference.vue";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/";
+const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
+
 export default {
   name: "HeroComponents",
 
@@ -224,50 +229,40 @@ export default {
 
   data() {
     return {
-      /** slide carousel 3 D */
-      slid3dImg: [
-        {
-          image: require("@/assets/images/carousel_accueil/1.jpg"),
-          title: "Groupes électrogènes-pompes",
-          sousTitle:
-            "Prenez le temps de vous poser les bonnes questions ! Nos experts vous conseillent sur ce qu'il faut savoir avant d'acheter un equipement ou de choisir une machine industrielle.",
-        },
-        {
-          image: require("@/assets/images/carousel_accueil/2.jpg"),
-          title: "Matériel technique",
-          sousTitle:
-            "Professionnel, vous avez besoin de conseils pour choisir vos équipements  ? Vous êtes à la recherche des dernières tendances du marché pour mieux développer votre établissement ? Horizon equipement est fait pour VOUS ! Vous aurez toutes les réponses à vos questions.",
-        },
-        {
-          image: require("@/assets/images/carousel_accueil/3.jpg"),
-          title:
-            "Conditionnement de produits en sac (Pesage, couture, soudure)",
-          sousTitle:
-            "Nous mettons à contribution notre expertise, notre expérience et notre écosystème de professionnels pour vous accompagner dans l’achat de vos machines et équipements industriels.",
-        },
-        {
-          image: require("@/assets/images/carousel_accueil/4.jpg"),
-          title: "Matériel didactique et scientifique-instrument de mesure",
-          sousTitle:
-            "Horizon equipement vous offre des equipements didactiques dédiés à l’enseignemen supérieur et des outils technologiques modernes pour une formation rapide, facile et efficace.",
-        },
-        {
-          image: require("@/assets/images/carousel_accueil/5.jpg"),
-          title: "Matériel de sûreté et de défense",
-          sousTitle:
-            "Vous êtes à la recherche de dernier équipements en matière de sécurité et de défense, Horizon equipement vous offre toute une gamme de produits : Equipement Anti-Riot, Engrenages militaires, Gilet pare-balles, Solution d’armures transparente, Décontamination, Détection explosive. ",
-        },
-      ],
+      /** Tableau slide */
+      slid3dImg: [],
+      PhotoPath: PHOTO_URL,
+      PhotoFileName: "",
     };
   },
-  computed: {
-    slideHeight() {
+  
+  methods: {
+    // **** Recuperer la liste des Slide
+
+     getDataSlide() {
+       axios
+         .get(API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=getSlide")
+         .then((response) => {
+           this.slid3dImg = response.data.NameSlide;
+         });
+     },
+
+        // ---* fonction chargement de l'image du slide
+    Upload_Image_Slide(slidImg) {
+      this.PhotoFileName = slidImg.PhotoFileName;
+    },
+ 
+ 
+  },
+
+   computed: {
+        slideHeight() {
       const sw = parseInt(this.width, 10) + parseInt(this.border, 10) * 2;
       const sh = parseInt(parseInt(this.height) + this.border * 2, 10);
       const ar = this.calculateAspectRatio(sw, sh);
       return this.slideWidth / ar;
     },
-  },
+   },
 };
 </script>
 
