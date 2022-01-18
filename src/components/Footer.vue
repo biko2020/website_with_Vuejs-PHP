@@ -49,7 +49,7 @@
           <v-divider></v-divider>
           <v-subheader>
             Copyright Horizon Equipements. All Rights Reserved
-            {{ new Date().getFullYear() }} — <strong> </strong>
+            {{ new Date().getFullYear() }}  <strong> </strong>
             <v-spacer />
             <strong>Designed and Developed by Ait Oufkir</strong>
           </v-subheader>

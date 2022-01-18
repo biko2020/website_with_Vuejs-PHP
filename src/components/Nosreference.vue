@@ -1,7 +1,5 @@
 <template>
   <v-main>
-    <v-content>
-      <v-container>
         <!-- slide barre nos partenaires-->
         <h4 class="txt-bleu text-uppercase">
           <span>Ils nous ont fait confiance :</span>
@@ -19,8 +17,6 @@
         </v-row>
 
         <!-- --------------------- -->
-      </v-container>
-    </v-content>
   </v-main>
 </template>
 <script>

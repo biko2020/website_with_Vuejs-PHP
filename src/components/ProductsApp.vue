@@ -21,9 +21,7 @@
             style="width: 367px"
             @click="
               (activeDomaine = item.CategorieName),             
-                getFilterProducts(activeDomaine),
-                Upload_Image_Product
-            "
+                getFilterProducts(activeDomaine)"
             :color="activeDomaine === item.CategorieName ? 'success' : ''"
             class="mx-5 my-5 justify-center"
             >{{ item.CategorieName }}</v-chip
@@ -120,6 +118,8 @@ export default {
       defaultCatgetorie: "Matériel technique",
       PhotoPath: PHOTO_URL,
       PhotoFileName: "",
+
+      activeDomaine:"",
     };
   },
 
@@ -158,11 +158,6 @@ export default {
         });
     },
 
-  
-    // ---* fonction chargement de l'image du produit
-    Upload_Image_Product(produit) {
-      this.PhotoFileName = produit.PhotoFileName;
-    },
     // afficher les produits d'une categorie au chargement de la parge d'une maniere aléatoire
     getDefaultProducts() {
       
@@ -185,7 +180,7 @@ export default {
         )
         .then((response) => {
           this.Produits = response.data.NameProduct;
-          console.log('*****'+ this.defaultCatgetorie);
+         
          
           
          
@@ -199,9 +194,6 @@ export default {
     this.getCategories();
     this.getDefaultProducts();
     //this.getFilterProducts();
-    // this.Upload_Image_Product;
-
-
   },
 };
 </script>

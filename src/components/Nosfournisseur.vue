@@ -1,7 +1,6 @@
 <template>
   <v-main>
-    <v-content>
-      <v-container>
+
         <v-row class="row text-center pt-md-5 aos-init aos-animate ">
           <v-col lg="12" class="col-12 align-self-center py-md-5 ">
             <v-subheader class="text-h4 justify-center"
@@ -45,8 +44,7 @@
           </div>
         </div>
         <!--- --- --- --- ------- --- --- --- --->
-      </v-container>
-    </v-content>
+
   </v-main>
 </template>
 <script>

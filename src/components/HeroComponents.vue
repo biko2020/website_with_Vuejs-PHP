@@ -1,31 +1,13 @@
 <template>
-  <v-app>
     <v-main>
-      <v-content>
         <v-container fill-height fluid class="my-15">
           <v-row>
             <v-col>
-              <carousel-3d
-                :height="600"
-                :width="500"
-                :border="1"
-                @load="slideHeight(),
-                Upload_Image_Slide"
-              >
-                <slide v-for="slidImg in slid3dImg" :key="slidImg.id" >
-                  <figure>
-                    <v-img :src="PhotoPath +'uploadSlide/'+ slidImg.PhotoFileName"> </v-img>
-                  </figure>
-                  <hr />
-                  <h5 class="txt-slide-titre">{{ slidImg.titre }}</h5>
-                  <figcaption>
-                    <p>{{ slidImg.description }}</p>
-                  </figcaption>
-                </slide>
-              </carousel-3d>
+              <!-- /*** components Slide Carousel */ -->
+              <SlideCarosel />
+               <!-- /***----------------------- */ -->
             </v-col>
-          </v-row>
-
+  </v-row>
           <v-row
             class="grid about-hero"
             align-content="center"
@@ -205,64 +187,28 @@
             </div>
           </v-row>
         </v-container>
-      </v-content>
     </v-main>
-  </v-app>
 </template>
 
 <script>
-import { Carousel3d, Slide } from "vue-carousel-3d";
-import Nosrefence from "../components/Nosreference.vue";
-import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/";
-const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
+import Nosrefence from "../components/Nosreference.vue";
+import SlideCarosel from "../components/SlideCarosel.vue";
+
 
 export default {
   name: "HeroComponents",
 
   components: {
     Nosrefence,
+    SlideCarosel,
   },
-  Carousel3d,
-  Slide,
+ 
 
   data() {
-    return {
-      /** Tableau slide */
-      slid3dImg: [],
-      PhotoPath: PHOTO_URL,
-      PhotoFileName: "",
-    };
+    return {};
   },
-  
-  methods: {
-    // **** Recuperer la liste des Slide
-
-     getDataSlide() {
-       axios
-         .get(API_URL + "Vuejs-PHP/src/API/data.model_Slide.php?action=getSlide")
-         .then((response) => {
-           this.slid3dImg = response.data.NameSlide;
-         });
-     },
-
-        // ---* fonction chargement de l'image du slide
-    Upload_Image_Slide(slidImg) {
-      this.PhotoFileName = slidImg.PhotoFileName;
-    },
- 
- 
-  },
-
-   computed: {
-        slideHeight() {
-      const sw = parseInt(this.width, 10) + parseInt(this.border, 10) * 2;
-      const sh = parseInt(parseInt(this.height) + this.border * 2, 10);
-      const ar = this.calculateAspectRatio(sw, sh);
-      return this.slideWidth / ar;
-    },
-   },
+     
 };
 </script>
 

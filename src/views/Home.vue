@@ -1,9 +1,9 @@
 <template>
    <v-app>
    <Header />
-    <v-content>
+    <v-main>
       <HeroComponents />
-    </v-content>
+    </v-main>
    <Footer/> 
   </v-app>
 
