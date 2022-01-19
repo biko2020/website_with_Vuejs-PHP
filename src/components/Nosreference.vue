@@ -7,7 +7,7 @@
         <v-row>
           <div class="container py-5">
             <agile :options="myOptions" class="slide">
-              <div v-for="(img, index) in img_Barre" :key="index">
+              <div v-for="(img, id) in img_Barre" :key="id">
                 <v-img :src="PhotoPath+'uploadPartenaire/'+img.PhotoFileName"> </v-img>
               </div>
               <template slot="prevButton">prev</template>
@@ -38,7 +38,7 @@ export default {
         autoplaySpeed: 3000,
         centerMode: true,
         initialSlide: 0,
-        slidesToShow: 4,
+        slidesToShow: 1,
         autoplay: true,
         infinite: true,
 
@@ -64,6 +64,7 @@ export default {
 
       //slide_Barre: "img_Barre",
       img_Barre: [],
+      id: 0,
       img:"",
       PhotoPath: PHOTO_URL,
       PhotoFileName:"",
