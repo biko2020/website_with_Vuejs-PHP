@@ -1,14 +1,12 @@
 <template>
-<v-app>
-  
-     <router-view></router-view>
+ <v-main>
+    <container>
     <Dashboard />
-    <v-content>
-        <SlideApp /> 
-    </v-content>
-    
-</v-app>
-   
+    <router-view />
+     <SlideApp />
+    </container>
+ </v-main>
+
 </template>
 
 <script>

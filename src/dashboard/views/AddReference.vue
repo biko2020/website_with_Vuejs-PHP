@@ -1,24 +1,23 @@
 <template>
-<v-amin>
+   <v-main>
       <router-view />
     <Dashboard />
     <v-content>
-        <ProductApp /> 
+        <ReferenceApp /> 
     </v-content>
-</v-amin>
-   
+</v-main>
 </template>
 
 <script>
 
 import Dashboard from '@/dashboard/views/Dashboard.vue';
-import ProductApp from '@/dashboard/components/ProductApp.vue';
+import ReferenceApp from '@/dashboard/components/ReferenceApp.vue';
 
 export default {
     name: 'Products',
     components: {
         Dashboard,
-        ProductApp,
+        ReferenceApp,
        
     }
     

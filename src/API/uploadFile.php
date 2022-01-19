@@ -44,6 +44,11 @@ if ($action == 'slide') {
 if ($action == 'products') {
     $destination_path = 'upload/';
 }
+
+if ($action == 'partenaire') {
+    $destination_path = 'uploadPartenaire/';
+}
+
     //si le nom du fichier n'est pas vide
 if (!empty($_FILES))  {
       

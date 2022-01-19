@@ -9,6 +9,7 @@ import Welcome from '../dashboard/views/Welcome.vue'
 import AddCategories from '../dashboard/views/AddCategories.vue'
 import AddProducts from '../dashboard/views/AddProdcuts.vue'
 import AddSlides from '../dashboard/views/AddSlides.vue'
+import AddReference from '../dashboard/views/AddReference.vue'
 
 
 
@@ -85,6 +86,11 @@ const routes = [
         path: '/addSlides',
         name: 'AddSlides',
         component: AddSlides
+      },
+      {
+        path: '/addReference',
+        name: 'AddReference',
+        component: AddReference
       }
     ]
 

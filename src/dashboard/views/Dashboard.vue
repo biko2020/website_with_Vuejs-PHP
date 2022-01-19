@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-main>
     <v-toolbar></v-toolbar>
     <v-app-bar dark fixed>
       <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-sm-none">
@@ -67,7 +67,7 @@
     <!-- Navigation bar ends -->
    <router-view></router-view>
   
-  </div>
+  </v-main>
 </template>
 
 <script>
@@ -81,9 +81,10 @@ export default {
 
        menus: [
          { title: "LogOut", route: "/admin" },
-         { title: "Ajouter Categories", route: "addCategories" },
-         { title: "Ajouter Produits", route: "addProducts" },
-         { title: "Ajouter Slide", route: "addSlides" },
+         { title: "Categories", route: "addCategories" },
+         { title: "Produits", route: "addProducts" },
+         { title: "Slide", route: "addSlides" },
+         { title: "Réference", route: "addReference"},
        
 
        ],

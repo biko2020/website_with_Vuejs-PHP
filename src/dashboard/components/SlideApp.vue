@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-main>
     <v-container fill-height fluid class="my-15 grey lighten-5">
       <v-row no-gutters>
         <v-col cols="3"> </v-col>
@@ -152,7 +152,7 @@
         <!--  ************** ___________fin de la table______________  ****************   -->
       </v-row>
     </v-container>
-  </div>
+  </v-main>
 </template>
 
 <script>

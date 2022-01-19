@@ -8,7 +8,7 @@
           <div class="container py-5">
             <agile :options="myOptions" class="slide">
               <div v-for="(img, index) in img_Barre" :key="index">
-                <v-img :src="img.images"> </v-img>
+                <v-img :src="PhotoPath+'uploadPartenaire/'+img.PhotoFileName"> </v-img>
               </div>
               <template slot="prevButton">prev</template>
               <template slot="nextButton">next</template>
@@ -21,6 +21,11 @@
 </template>
 <script>
 import { VueAgile } from "vue-agile";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/";
+const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
+
 export default {
   name: "Nosreference",
   agile: VueAgile,
@@ -57,47 +62,29 @@ export default {
         ],
       },
 
-      slide_Barre: "img_Barre",
-      img_Barre: [
-        {
-          images: require("@/assets/logo/references/1.png"),
-        },
-        {
-          images: require("@/assets/logo/references/2.png"),
-        },
-        {
-          images: require("@/assets/logo/references/3.jpg"),
-        },
-        {
-          images: require("@/assets/logo/references/4.png"),
-        },
-        {
-          images: require("@/assets/logo/references/5.jpg"),
-        },
-        {
-          images: require("@/assets/logo/references/6.png"),
-        },
-        {
-          images: require("@/assets/logo/references/7.jpeg"),
-        },
-        {
-          images: require("@/assets/logo/references/8.png"),
-        },
-        {
-          images: require("@/assets/logo/references/9.jpg"),
-        },
-        {
-          images: require("@/assets/logo/references/10.png"),
-        },
-        {
-          images: require("@/assets/logo/references/11.jpg"),
-        },
-        {
-          images: require("@/assets/logo/references/12.jpg"),
-        },
-      ],
+      //slide_Barre: "img_Barre",
+      img_Barre: [],
+      img:"",
+      PhotoPath: PHOTO_URL,
+      PhotoFileName:"",
     };
   },
+
+  methods: {
+      // **** Recuperer la liste des Partenaires
+
+     getDataPartenaire() {
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=getPartenaire")
+         .then((response) => {
+           this.img_Barre = response.data.NamePartenaire;
+          
+         });
+     },
+  },
+  mounted: function () {
+    this.getDataPartenaire();
+  
+  }, 
 };
 </script>
 <style src="@/assets/css/style.css"></style>

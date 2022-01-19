@@ -1,11 +1,11 @@
 <template>
- <v-app>
+ <v-main>
+    <container>
     <Dashboard />
     <router-view />
-   <v-content>
-        <CategorieApp />
-   </v-content>
- </v-app>
+     <CategorieApp />
+    </container>
+ </v-main>
    
 </template>
 <script>

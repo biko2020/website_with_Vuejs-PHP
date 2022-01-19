@@ -1,4 +1,5 @@
 <template>
+<v-main >
   <v-container fill-height fluid class="my-15">
     <section class="section about-hero">
       <div class="grid about-hero__grid">
@@ -133,9 +134,8 @@
         </div>
       </div>
     </section>
-
-   
   </v-container>
+  </v-main>
 </template>
 <script>
 

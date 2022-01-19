@@ -1,10 +1,8 @@
 <template>
-  <v-container fill-height fluid class="my-15">
+  <div id="app">  
+      <v-container fill-height fluid class="my-15">
   
-           
-
-  <div id="app">
-    <v-app>
+ 
         <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
             <div>
                 <v-tabs v-model="tab" show-arrows background-color="deep-dark accent-4" icons-and-text dark grow>
@@ -67,13 +65,10 @@
                 </v-tabs>
             </div>
         </v-dialog>
-    </v-app>
-</div>
-            
-            
-
+    
   
     </v-container>
+    </div>
        
     
 </template>
