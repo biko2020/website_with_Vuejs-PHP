@@ -9,7 +9,8 @@ import Welcome from '../dashboard/views/Welcome.vue'
 import AddCategories from '../dashboard/views/AddCategories.vue'
 import AddProducts from '../dashboard/views/AddProdcuts.vue'
 import AddSlides from '../dashboard/views/AddSlides.vue'
-import AddReference from '../dashboard/views/AddReference.vue'
+import AddLogoReference from '../dashboard/views/AddLogoReference.vue'
+import AddLogoFournisseur from '../dashboard/views/AddLogoFournisseur.vue'
 
 
 
@@ -88,9 +89,14 @@ const routes = [
         component: AddSlides
       },
       {
-        path: '/addReference',
-        name: 'AddReference',
-        component: AddReference
+        path: '/addLogoReference',
+        name: 'AddLogoReference',
+        component: AddLogoReference
+      },
+      {
+        path: '/addLogoFournisseur',
+        name: 'AddLogoFournisseur',
+        component: AddLogoFournisseur
       }
     ]
 

@@ -84,7 +84,8 @@ export default {
          { title: "Categories", route: "addCategories" },
          { title: "Produits", route: "addProducts" },
          { title: "Slide", route: "addSlides" },
-         { title: "Réference", route: "addReference"},
+         { title: "Réference", route: "addLogoReference"},
+         { title: "Fournisseurs", route: "addLogoFournisseur"},
        
 
        ],

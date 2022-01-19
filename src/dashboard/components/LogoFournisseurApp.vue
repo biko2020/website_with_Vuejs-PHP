@@ -146,7 +146,7 @@ const API_URL = "http://127.0.0.1:8000/";
 const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
 
 export default {
-  name: "ReferenceApp",
+  name: "LogoFournisseurApp",
 
   data() {
     return {

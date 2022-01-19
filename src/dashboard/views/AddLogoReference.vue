@@ -3,7 +3,7 @@
       <router-view />
     <Dashboard />
     <v-content>
-        <ReferenceApp /> 
+        <LogoReferenceApp /> 
     </v-content>
 </v-main>
 </template>
@@ -11,13 +11,13 @@
 <script>
 
 import Dashboard from '@/dashboard/views/Dashboard.vue';
-import ReferenceApp from '@/dashboard/components/ReferenceApp.vue';
+import LogoReferenceApp from '@/dashboard/components/LogoReferenceApp.vue';
 
 export default {
-    name: 'Products',
+    name: 'AddLogoReference',
     components: {
         Dashboard,
-        ReferenceApp,
+        LogoReferenceApp,
        
     }
     
