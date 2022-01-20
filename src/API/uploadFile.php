@@ -41,12 +41,17 @@ $image = '';
 if ($action == 'slide') {
     $destination_path = 'uploadSlide/';
 }
+
 if ($action == 'products') {
     $destination_path = 'upload/';
 }
 
 if ($action == 'partenaire') {
     $destination_path = 'uploadPartenaire/';
+}
+
+if ($action == 'fournisseur') {
+    $destination_path = 'uploadFournisseur/';
 }
 
     //si le nom du fichier n'est pas vide

@@ -48,7 +48,6 @@
 }
 
 
-
 /* ------------Button Slide Agil 2 D ----------*/
 
 
@@ -56,15 +55,17 @@
 
 .box {
   border-radius: 10px;
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(61, 60, 60); 
   width: 100px;
   height: 100px;
   margin: 1rem;
 }
+
 #app > span {
   display: flex;
   justify-content: center;
 }
+
 .img-fluid {
   max-width: 100%;
   height: auto;

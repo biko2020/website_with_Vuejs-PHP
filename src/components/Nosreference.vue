@@ -1,4 +1,5 @@
 <template>
+    <!-- si le chargement de toutes les image du tableu -->
   <v-main v-if="img_Barre.length">
         <!-- slide barre nos partenaires-->
         <h4 class="txt-bleu text-uppercase">

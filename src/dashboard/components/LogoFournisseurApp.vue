@@ -9,13 +9,13 @@
       </v-row>
       <v-row no-gutters>
         <v-col cols="3">
-          <span class="input-group-text">Entrer le nom de partenaire</span>
+          <span class="input-group-text">Entrer le nom du fournisseur</span>
         </v-col>
         <v-col cols="6">
           <input
             type="text"
             class="form-control"
-            v-model="PartenaireName"
+            v-model="FournisseurName"
             style="width: 95%"
           />
           <input 
@@ -33,7 +33,7 @@
         </v-col>
         <!--  ******* appel de la fonction imageUpload ***** -->
         <v-col cols="6" >
-          <img width="250px" height="250px" :src="PhotoPath+'uploadPartenaire/'+ PhotoFileName" />
+          <img width="250px" height="250px" :src="PhotoPath+'uploadFournisseur/'+ PhotoFileName" />
           <input
             :v-bind="value"
             type="file"
@@ -73,7 +73,7 @@
           <thead>
             <tr>
               <th>N° </th>
-              <th>Name de Partenaire</th>
+              <th>Name du Fournisseur</th>
               <th>image</th>
               <th>Opérations</th>
               
@@ -82,10 +82,10 @@
 
           <tbody>
             <!-- **** boucle recuperer des enregistrements Produits depuis la db **** -->
-            <tr v-for="item in partenaires" v-bind:key="item.id">
+            <tr v-for="item in fournisseurs" v-bind:key="item.id">
               <td>{{ item.id }}</td>
               <td>{{ item.nom }}</td>
-              <td><img width="100px" height="100px" :src="PhotoPath+'uploadPartenaire/'+ item.PhotoFileName" /></td>
+              <td><img width="100px" height="100px" :src="PhotoPath+'uploadFournisseur/'+ item.PhotoFileName" /></td>
               <td>
                 <!-- **** fonction Edite **** -->
                 <button
@@ -151,13 +151,12 @@ export default {
   data() {
     return {
 
-      partenaires: [],
+      fournisseurs: [],
       id: 0,
-      PartenaireName: "",
+      FournisseurName: "",
       monFichier: "",
       PhotoFileName: "logo.png",
       PhotoPath: PHOTO_URL,
-
       ImageToDelete : "",
       
       
@@ -165,12 +164,12 @@ export default {
   },
 
   methods: {
-    // **** Recuperer la liste des Partenaires
+    // **** Recuperer la liste des Fournisseurs
 
-     getDataPartenaire() {
-       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=getPartenaire")
+     getDataFournisseur() {
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Fournisseur.php?action=getFournisseur")
          .then((response) => {
-           this.partenaires = response.data.NamePartenaire;
+           this.fournisseurs = response.data.FournisseurName;
           
          });
      },
@@ -180,7 +179,7 @@ export default {
 
      edit_Function(item) {
        this.id = item.id;
-       this.PartenaireName = item.nom;
+       this.FournisseurName = item.nom;
        this.PhotoFileName = item.PhotoFileName;
        this.ImageToDelete = item.PhotoFileName;
 
@@ -188,11 +187,11 @@ export default {
 
     // **** Ajouter des enregistrements
     create_Function() {
-      if (this.PartenaireName != "") {
+      if (this.FournisseurName != "") {
 
         let rowData = {
          
-          PartenaireName: this.PartenaireName,
+          FournisseurName: this.FournisseurName,
           PhotoFileName: this.PhotoFileName,
         };
         //converti la donnée (rowData) en chaîne JSON.
@@ -206,7 +205,7 @@ export default {
 
         axios
           .post(
-            API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=create_Partenaire",
+            API_URL + "Vuejs-PHP/src/API/data.model_Fournisseur.php?action=create_Fournisseur",
             formData,
             {
               config: {
@@ -217,10 +216,10 @@ export default {
           .then((response) => {
             alert(response.data.message);
 
-              this.getDataPartenaire();
+              this.getDataFournisseur();
           // vider les champs imput, textarea, image par defaut
                this.PhotoFileName = "logo.png";
-               this.PartenaireName = "";
+               this.FournisseurName = "";
 
           });
           
@@ -232,7 +231,7 @@ export default {
      update_Function() {
        let rowData = {
          id: this.id,
-         PartenaireName: this.PartenaireName,
+         FournisseurName: this.FournisseurName,
          PhotoFileName: this.PhotoFileName,
          ImageToDelete: this.ImageToDelete,
        };
@@ -245,7 +244,7 @@ export default {
 
        axios
          .post(
-           API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=Update_Partenaire",
+           API_URL + "Vuejs-PHP/src/API/data.model_Fournisseur.php?action=Update_Fournisseur",
            formData,
            {
              config: {
@@ -264,7 +263,7 @@ export default {
     // **** Suppression des enregistrements
 
      delete_Function(id) {
-       if (!confirm("Êtes-vous sûr de vouloir supprimer ce partenaire ?")) {
+       if (!confirm("Êtes-vous sûr de vouloir supprimer ce fournisseur ?")) {
          return;
        }
        let rowData = 
@@ -278,7 +277,7 @@ export default {
 
        axios
          .post(
-           API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=delete_Partenaire",
+           API_URL + "Vuejs-PHP/src/API/data.model_Fournisseur.php?action=delete_Fournisseur",
            formData,
            {
              config: {
@@ -287,7 +286,7 @@ export default {
            }
          )
          .then((response) => {
-          this.getDataPartenaire();
+          this.getDataFournisseur();
            alert(response.data.message);
          });
      },
@@ -298,7 +297,7 @@ export default {
       let formData = new FormData();
       formData.append("monFichier", event.target.files[0]);
       axios
-        .post(API_URL + "Vuejs-PHP/src/API/uploadFile.php?action=partenaire", formData, {
+        .post(API_URL + "Vuejs-PHP/src/API/uploadFile.php?action=fournisseur", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             //'enctype': 'multipart/form-data'
@@ -312,7 +311,7 @@ export default {
     }, 
   },
   mounted: function () {
-    this.getDataPartenaire();
+    this.getDataFournisseur();
     //this.update_Function();
     this.imageUpload();
   },

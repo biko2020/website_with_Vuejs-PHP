@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main v-if="fournisseurs.length">
 
         <v-row class="row text-center pt-md-5 aos-init aos-animate ">
           <v-col lg="12" class="col-12 align-self-center py-md-5 ">
@@ -15,53 +15,92 @@
         <!--- --- --- --- Animation --- --- --- --->
 
         <div class="container py-5">
-          <div id="app" v-if="logo === 'logo_Fournisseurs'">
-            <sequential-entrance>
-              <v-img class="box" src="@/assets/logo/fournisseurs/alfa.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/lotus.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/alpha.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/edibon.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/idea.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/semic.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/standart.png">
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/sumakpump.png">
-              </v-img>
-              <v-img
-                class="box"
-                src="@/assets/logo/fournisseurs/cleananvac.png"
-              >
-              </v-img>
-              <v-img class="box" src="@/assets/logo/fournisseurs/lega.png">
-              </v-img>
-            </sequential-entrance>
+            <agile :options="myOptions" class="slide">
+              <div v-for="(img, id) in fournisseurs" :key="id">
+                <v-img class="box-logo" :src="PhotoPath+'uploadFournisseur/'+img.PhotoFileName"> </v-img>
+              </div>
+            </agile>
           </div>
-        </div>
         <!--- --- --- --- ------- --- --- --- --->
 
   </v-main>
 </template>
 <script>
+import { VueAgile } from "vue-agile";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/";
+const PHOTO_URL = "http://127.0.0.1:8000/Vuejs-PHP/src/API/";
 export default {
   name: "Nosfournisseur",
+  agile: VueAgile,
 
   data() {
     return {
-      logo: "logo_Fournisseurs",
-      logo_Fournisseurs: [
-        {
-          images: require("@/assets/logo/fournisseurs/alfa.png"),
-        },
-      ],
+      myOptions: {
+        navButtons: false,
+        fade: false,
+        autoplaySpeed: 3000,
+        centerMode: true,
+        initialSlide: 0,
+        slidesToShow: 4,
+        autoplay: true,
+        infinite: true,
+
+        responsive: [
+          {
+            breakpoint: 600,
+            settings: {
+              dots: false,
+            },
+          },
+
+          {
+            breakpoint: 900,
+            settings: {
+              navButtons: true,
+              arrows: true,
+              dots: true,
+              infinite: true,
+            },
+          },
+        ],
+      },
+
+      //logo: "logo_Fournisseurs",
+      //logo_Fournisseurs: [ ],
+      fournisseurs: [],
+      id: 0,
+      img:"",
+      PhotoPath: PHOTO_URL,
+      PhotoFileName:"",
+  
     };
   },
+
+   methods: {
+      // **** Recuperer la liste des Fournisseurs
+
+      getDataFournisseur() {
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Fournisseur.php?action=getFournisseur")
+         .then((response) => {
+           this.fournisseurs = response.data.FournisseurName;
+          
+         });
+     },
+  },
+  mounted: function () {
+    this.getDataFournisseur();
+  
+  }, 
 };
 </script>
+<style>
 
-<style src="@/assets/css/style.css"></style>
+.box-logo {
+ margin: 1rem;
+}
+</style>
+
+
+
