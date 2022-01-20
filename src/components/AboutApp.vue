@@ -149,26 +149,12 @@
               Ils nous ont fait confiance :
             </h2>
             <hr />
-            <p class="section-heading__subhead text-major color-green-80 ">
+            
+               <div v-for="(text, id) in textes" :key="id">
+                 <p class="section-heading__subhead text-major color-green-80 ">
               <br />
-
-              - L'ADMINISTRATION DE LA DÉFENSE NATIONALE.<br />
-              - L'ADMINISTRATION DE LA PROTECTION CIVILE.<br />
-              - LA SOCIÉTÉ ROYALE DE L'ENCOURAGEMENT DE CHEVAL (SOREC).<br />
-              - LA REGIE AUTONOME DE DISTRIBUTION DE L'EAU ET D'ÉLECTRICITÉ DE
-              SAFI (RADEES).<br />
-              - L'OFFICE NATIONAL DE L'ÉLECTRICITÉ ET DE L'EAU POTABLE
-              (ONEE).<br />
-              - MINISTÈRE DE L'ÉDUCATION NATIONALE.<br />
-              - UNIVERSITÉ HASSAN II DE CASABLANCA.<br />
-              - LA FACULTÉ DES SCIENCES TECHNIQUES DE MOHAMMEDIA.<br />
-              - LA GENDARMERIE ROYALE.<br />
-              - LA DÉLÉGATION GÉNÉRALE A L'ADMINISTRATION PÉNITENTIAIRE ET A LA
-              RÉINSERTION.<br />
-              - MINISTÈRE DE LA SANTÉ.<br />
-              - CENTRE HOSPITALIER IBNOU SINA.<br />
-              - SONACOS (SOCIETE NATIONALE DE COMMERCIALISATION DE SEMENCES).<br />
-            </p>
+               {{text.nom}}<br></p>
+               </div>           
           </div>
         </div>
       </div>
@@ -177,12 +163,40 @@
   </v-container>
 </template>
 <script>
+
+import axios from "axios";
+const API_URL = "http://127.0.0.1:8000/";
+
 import Nosreference from "../components/Nosreference.vue";
 export default {
   name: "AboutApp",
   components: {
     Nosreference,
   },
+
+  data() {
+    return{
+      textes: [],
+      text:"",
+
+    };
+  },
+
+ methods: {
+      // **** Recuperer la liste des Partenaires
+
+     getDataPartenaire() {
+       axios.get(API_URL + "Vuejs-PHP/src/API/data.model_Partenaire.php?action=getPartenaire")
+         .then((response) => {
+           this.textes = response.data.NamePartenaire;
+          
+         });
+     },
+  },
+  mounted: function () {
+    this.getDataPartenaire();
+  
+  }, 
 };
 </script>
 
