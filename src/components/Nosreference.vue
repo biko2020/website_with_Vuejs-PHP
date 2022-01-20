@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main v-if="img_Barre.length">
         <!-- slide barre nos partenaires-->
         <h4 class="txt-bleu text-uppercase">
           <span>Ils nous ont fait confiance :</span>
@@ -38,7 +38,7 @@ export default {
         autoplaySpeed: 3000,
         centerMode: true,
         initialSlide: 0,
-        slidesToShow: 1,
+        slidesToShow: 4,
         autoplay: true,
         infinite: true,
 
